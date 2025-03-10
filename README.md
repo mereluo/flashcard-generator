@@ -4,7 +4,8 @@ FileUpload.jsx:
 
 1. Beautify file upload functions
 2. Only preserve upload pdf function
-3. 完善 Upload function:
+3. Upload multiple pdf files
+4. 完善 Upload function:
    1. convert pdf into json -> 可以传到 backend
 
 FlashcardControls.jsx:
