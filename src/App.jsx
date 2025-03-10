@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import FileUpload from './components/FileUpload';
 import FlashcardList from './components/FlashcardList';
 import FlashcardControls from './components/FlashcardControls';
@@ -34,8 +34,12 @@ const App = () => {
           Flashcard Generator
         </Typography>
 
-        <FileUpload onUpload={handleUpload} />
-        <FlashcardControls onGenerate={handleGenerate} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <FileUpload onUpload={handleUpload} />
+          <Divider sx={{ width: '100%', my: 2 }} />
+          <FlashcardControls onGenerate={handleGenerate} />
+        </Box>
+
         <FlashcardList flashcards={flashcards} />
       </Box>
     </div>
