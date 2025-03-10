@@ -47,33 +47,29 @@ const FileUpload = ({ onUpload }) => {
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 2 }}>
         {/* PDF Upload Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="subtitle1" sx={{ fontFamily: 'Open Sans' }}>
+          <Typography variant="body" sx={{ fontFamily: 'Open Sans' }}>
             Upload PDF for new flashcards
           </Typography>
-          <input type="file" accept="application/pdf" onChange={(e) => handleFileChange(e, 'pdf')} style={{ display: 'none' }} id="pdf-upload" />
-          <label htmlFor="pdf-upload">
-            <Button variant="outlined" startIcon={<UploadIcon />}>
-              {pdfFile ? `Selected: ${pdfFile.name}` : 'Choose PDF'}
-            </Button>
-          </label>
+          <Button variant="outlined" startIcon={<UploadIcon />} component="label">
+            {pdfFile ? `Selected: ${pdfFile.name}` : 'Choose PDF'}
+            <input type="file" accept="application/pdf" onChange={(e) => handleFileChange(e, 'pdf')} hidden />
+          </Button>
         </Box>
-
+        <Typography>or/and</Typography>
         {/* JSON Upload Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant="body" sx={{ fontFamily: 'Open Sans' }}>
             Upload previous flashcards
           </Typography>
-          <input type="file" accept="application/json" onChange={(e) => handleFileChange(e, 'json')} style={{ display: 'none' }} id="json-upload" />
-          <label htmlFor="json-upload">
-            <Button variant="outlined" startIcon={<UploadIcon />}>
-              {jsonFile ? `Selected: ${jsonFile.name}` : 'Choose JSON'}
-            </Button>
-          </label>
+          <Button variant="outlined" startIcon={<UploadIcon />} component="label">
+            {jsonFile ? `Selected: ${jsonFile.name}` : 'Choose JSON'}
+            <input type="file" accept="application/json" onChange={(e) => handleFileChange(e, 'json')} hidden />
+          </Button>
         </Box>
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2, marginBottom: 3 }}>
-        <Button variant="outlined" color="primary" onClick={handleUpload} sx={{ width: '80%' }}>
+        <Button variant="outlined" color="primary" onClick={handleUpload} sx={{ width: '50%' }}>
           Upload File(s)
         </Button>
       </Box>
