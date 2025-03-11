@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Card, Typography, IconButton, TextareaAutosize, Box, Paper } from "@mui/material"
 import { styled } from "@mui/system"

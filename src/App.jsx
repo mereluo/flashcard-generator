@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import {
   Box,
@@ -17,7 +15,7 @@ import FileUpload from "./components/FileUpload"
 import FlashcardList from "./components/FlashcardList"
 import FlashcardControls from "./components/FlashcardControls"
 
-// Replace the current theme palette with this more youthful and refreshing color scheme
+// Create a custom theme with youthful and refreshing colors
 const theme = createTheme({
   palette: {
     primary: {
@@ -103,7 +101,7 @@ const App = () => {
               p: 3,
               mb: 4,
               width: "100%",
-              background: "linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%)", // Updated gradient with new teal colors
+              background: "linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%)",
               color: "white",
               textAlign: "center",
               borderRadius: "16px",

@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Button, Typography, Box, Paper, Alert } from "@mui/material"
 import UploadIcon from "@mui/icons-material/Upload"
@@ -81,7 +79,7 @@ const FileUpload = ({ onUpload }) => {
             display: "flex",
             alignItems: "center",
             gap: 2,
-            backgroundColor: "rgba(63, 81, 181, 0.05)",
+            backgroundColor: "rgba(0, 188, 212, 0.05)",
           }}
         >
           <FileIcon color="primary" />

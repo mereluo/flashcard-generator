@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { mockFlashcards } from "../data/mockFlashcards"
 import {
@@ -20,17 +18,10 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
 const FlashcardControls = ({ onGenerate }) => {
   const [selectedType, setSelectedType] = useState("10 Definition Flashcards")
   const [customType, setCustomType] = useState("")
-  const [isGenerating, setIsGenerating] = useState(false)
 
   const handleGenerate = () => {
-    setIsGenerating(true)
-
-    // Simulate API call delay
-    setTimeout(() => {
-      const key = selectedType.includes("Definition") ? "definitions" : "qna"
-      onGenerate(mockFlashcards[key])
-      setIsGenerating(false)
-    }, 1000)
+    const key = selectedType.includes("Definition") ? "definitions" : "qna"
+    onGenerate(mockFlashcards[key])
   }
 
   return (
@@ -105,14 +96,13 @@ const FlashcardControls = ({ onGenerate }) => {
         color="primary"
         onClick={handleGenerate}
         fullWidth
-        disabled={isGenerating}
         startIcon={<AutoAwesomeIcon />}
         sx={{
           height: "48px",
           fontWeight: 600,
         }}
       >
-        {isGenerating ? "Generating..." : "Generate Flashcards"}
+        Generate Flashcards
       </Button>
     </Box>
   )
