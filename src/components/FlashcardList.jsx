@@ -1,25 +1,20 @@
-import React from "react"
-import { Box, Typography, Divider } from "@mui/material"
-import Flashcard from "./Flashcard"
+import React from 'react';
+import { Box, Typography, Divider } from '@mui/material';
+import Flashcard from './Flashcard';
 
-const FlashcardList = ({ flashcards }) => {
-  const handleEditFlashcard = (updatedCard) => {
-    // This would typically update the flashcard in the parent state
-    console.log("Flashcard updated:", updatedCard)
-  }
-
+const FlashcardList = ({ flashcards, onEdit }) => {
   if (!flashcards.length) {
-    return null
+    return null;
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: '100%' }}>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: 4,
-          width: "100%",
+          width: '100%',
         }}
       >
         {flashcards.map((card, index) => (
@@ -27,30 +22,29 @@ const FlashcardList = ({ flashcards }) => {
             <Box>
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  display: 'flex',
+                  alignItems: 'center',
                   mb: 1,
                 }}
               >
                 <Typography
                   variant="subtitle2"
                   sx={{
-                    color: "text.secondary",
+                    color: 'text.secondary',
                     fontWeight: 500,
                   }}
                 >
                   Flashcard {index + 1} of {flashcards.length}
                 </Typography>
               </Box>
-              <Flashcard flashcard={card} onEdit={(updatedCard) => handleEditFlashcard({ ...card, ...updatedCard })} />
+              <Flashcard flashcard={card} onEdit={onEdit} />
             </Box>
-            {index < flashcards.length - 1 && <Divider sx={{ width: "100%" }} />}
+            {index < flashcards.length - 1 && <Divider sx={{ width: '100%' }} />}
           </React.Fragment>
         ))}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default FlashcardList
-
+export default FlashcardList;
