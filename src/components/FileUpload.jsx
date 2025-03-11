@@ -1,33 +1,82 @@
 import { useState } from "react"
-import { Button, Typography, Box, Paper, Alert } from "@mui/material"
+import { Button, Typography, Box, Paper, Alert, IconButton } from "@mui/material"
 import UploadIcon from "@mui/icons-material/Upload"
 import FileIcon from "@mui/icons-material/InsertDriveFile"
+import CloseIcon from "@mui/icons-material/Close"
 
 const FileUpload = ({ onUpload }) => {
-  const [pdfFile, setPdfFile] = useState(null)
+  const [pdfFiles, setPdfFiles] = useState([])
   const [error, setError] = useState("")
 
+  const maxFileCount = 10
+  const maxTotalSize = 50 * 1024 * 1024 // 50 MB in bytes
+
   const handleFileChange = (event) => {
-    const file = event.target.files[0]
+    const selectedFiles = Array.from(event.target.files)
     setError("")
 
-    if (file) {
-      if (file.type === "application/pdf") {
-        setPdfFile(file)
-      } else {
-        setError("Invalid file type. Please upload a PDF file.")
+    if (selectedFiles.length === 0) return
+
+    // Filter out valid PDF files and ignore others
+    const validFiles = selectedFiles.filter(file => file.type === "application/pdf")
+    const invalidFiles = selectedFiles.filter(file => file.type !== "application/pdf")
+
+    let errorMessages = []
+    if (invalidFiles.length > 0) {
+      errorMessages.push("Some files are not valid PDF format and have been ignored.")
+    }
+
+    // Calculate the current total size of already selected files
+    const currentSize = pdfFiles.reduce((acc, file) => acc + file.size, 0)
+    let acceptedFiles = []
+    let acceptedSize = 0
+    let countError = false
+    let sizeError = false
+
+    // Process each valid file and check against count and size limits
+    for (const file of validFiles) {
+      if (pdfFiles.length + acceptedFiles.length >= maxFileCount) {
+        countError = true
+        break // Stop processing additional files if max count reached
       }
+      if (currentSize + acceptedSize + file.size > maxTotalSize) {
+        sizeError = true
+        continue // Skip this file if total size limit would be exceeded
+      }
+      acceptedFiles.push(file)
+      acceptedSize += file.size
+    }
+
+    if (countError) {
+      errorMessages.push("Maximum file count reached. Only the first 10 files are allowed.")
+    }
+    if (sizeError) {
+      errorMessages.push("Total file size exceeds 50MB limit. Some files were skipped.")
+    }
+
+    if (errorMessages.length > 0) {
+      setError(errorMessages.join(" "))
+    }
+
+    if (acceptedFiles.length > 0) {
+      // Append the newly accepted PDF files to the existing list
+      setPdfFiles(prevFiles => [...prevFiles, ...acceptedFiles])
     }
   }
 
+  const handleDelete = (index) => {
+    setPdfFiles(prevFiles => prevFiles.filter((_, i) => i !== index))
+  }
+
   const handleUpload = () => {
-    if (!pdfFile) {
-      setError("Please upload a PDF file")
+    if (pdfFiles.length === 0) {
+      setError("Please upload at least one PDF file.")
       return
     }
-
-    // PDF file is passed as File object
-    onUpload(pdfFile.name, pdfFile)
+    // Call the provided onUpload method and pass all PDF files
+    onUpload(pdfFiles)
+    // Optional: Clear the list after upload completes
+    setPdfFiles([])
   }
 
   return (
@@ -48,7 +97,7 @@ const FileUpload = ({ onUpload }) => {
         }}
       >
         <Typography variant="body1" sx={{ fontWeight: 500, minWidth: "200px" }}>
-          Upload PDF for new flashcards
+          Upload PDF(s) for new flashcards
         </Typography>
 
         <Button
@@ -58,56 +107,70 @@ const FileUpload = ({ onUpload }) => {
           fullWidth
           sx={{
             height: "48px",
-            borderColor: pdfFile ? "primary.main" : "grey.300",
+            borderColor: pdfFiles.length > 0 ? "primary.main" : "grey.300",
             borderWidth: "2px",
             "&:hover": {
               borderWidth: "2px",
             },
           }}
         >
-          {pdfFile ? "Change PDF" : "Choose PDF"}
-          <input type="file" accept="application/pdf" onChange={handleFileChange} hidden />
+          Choose PDF(s)
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handleFileChange}
+            hidden
+            multiple
+          />
         </Button>
       </Box>
 
-      {pdfFile && (
-        <Paper
-          variant="outlined"
-          sx={{
-            p: 2,
-            mb: 3,
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            backgroundColor: "rgba(0, 188, 212, 0.05)",
-          }}
-        >
-          <FileIcon color="primary" />
-          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-            {pdfFile.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ ml: "auto" }}>
-            {(pdfFile.size / 1024).toFixed(1)} KB
-          </Typography>
-        </Paper>
+      {/* PDF file list area */}
+      {pdfFiles.length > 0 && (
+        <Box sx={{ mb: 3 }}>
+          {pdfFiles.map((file, index) => (
+            <Paper
+              key={index}
+              variant="outlined"
+              sx={{
+                p: 2,
+                mb: 2,
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                backgroundColor: "rgba(0, 188, 212, 0.05)",
+              }}
+            >
+              <FileIcon color="primary" />
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                {file.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ ml: "auto" }}>
+                {(file.size / 1024).toFixed(1)} KB
+              </Typography>
+              <IconButton onClick={() => handleDelete(index)}>
+                <CloseIcon />
+              </IconButton>
+            </Paper>
+          ))}
+        </Box>
       )}
 
       <Button
         variant="contained"
         color="primary"
         onClick={handleUpload}
-        disabled={!pdfFile}
+        disabled={pdfFiles.length === 0}
         fullWidth
         sx={{
           height: "48px",
           mt: 1,
         }}
       >
-        Upload File
+        Upload File(s)
       </Button>
     </Box>
   )
 }
 
 export default FileUpload
-
