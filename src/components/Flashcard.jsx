@@ -1,102 +1,215 @@
-import React, { useState } from 'react';
-import { Card, Typography, IconButton, TextareaAutosize } from '@mui/material';
-import { styled } from '@mui/system';
-import EditIcon from '@mui/icons-material/Edit';
-import CheckIcon from '@mui/icons-material/Check';
+"use client"
 
-const FlipCardContainer = styled('div')({
-  perspective: '1000px',
-  width: '520px',
-  height: '200px',
-  position: 'relative',
-});
+import { useState } from "react"
+import { Card, Typography, IconButton, TextareaAutosize, Box, Paper } from "@mui/material"
+import { styled } from "@mui/system"
+import EditIcon from "@mui/icons-material/Edit"
+import CheckIcon from "@mui/icons-material/Check"
+import FlipIcon from "@mui/icons-material/Flip"
 
-const FlipCardInner = styled('div')(({ flipped }) => ({
-  width: '100%',
-  height: '100%',
-  position: 'relative',
-  transition: 'transform 0.6s',
-  transformStyle: 'preserve-3d',
-  transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-}));
+const FlipCardContainer = styled("div")({
+  perspective: "1000px",
+  width: "100%",
+  height: "220px",
+  position: "relative",
+})
+
+const FlipCardInner = styled("div")(({ flipped }) => ({
+  width: "100%",
+  height: "100%",
+  position: "relative",
+  transition: "transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+  transformStyle: "preserve-3d",
+  transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+}))
 
 const FlipCardSide = styled(Card)({
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  textAlign: 'center',
-  position: 'absolute',
-  backfaceVisibility: 'hidden',
-  overflow: 'hidden',
-});
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  position: "absolute",
+  backfaceVisibility: "hidden",
+  overflow: "hidden",
+  padding: "16px",
+  boxSizing: "border-box",
+})
 
-const FrontSide = styled(FlipCardSide)({
-  backgroundColor: '#fdfdfb',
-});
-const BackSide = styled(FlipCardSide)({
-  transform: 'rotateY(180deg)',
-  backgroundColor: '#ebf4f9',
-});
+const FrontSide = styled(FlipCardSide)(({ theme }) => ({
+  backgroundColor: "#ffffff",
+  borderLeft: `6px solid ${theme.palette.primary.main}`,
+}))
 
-const StyledTextarea = styled(TextareaAutosize)({
-  width: '100%',
-  height: '100px',
-  maxHeight: '150px',
-  minHeight: '50px',
-  resize: 'vertical',
-  fontSize: '16px',
-  padding: '8px',
-  border: '1px solid #ccc',
-  borderRadius: '4px',
-  outline: 'none',
-  overflowY: 'scroll',
-  display: 'block',
-  boxSizing: 'border-box',
-});
+const BackSide = styled(FlipCardSide)(({ theme }) => ({
+  transform: "rotateY(180deg)",
+  backgroundColor: "#f5f7ff",
+  borderLeft: `6px solid ${theme.palette.secondary.main}`,
+}))
+
+const StyledTextarea = styled(TextareaAutosize)(({ theme }) => ({
+  width: "100%",
+  height: "150px",
+  maxHeight: "150px",
+  minHeight: "100px",
+  resize: "none",
+  fontSize: "16px",
+  padding: "12px",
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: "8px",
+  outline: "none",
+  fontFamily: theme.typography.fontFamily,
+  "&:focus": {
+    borderColor: theme.palette.primary.main,
+    boxShadow: `0 0 0 2px ${theme.palette.primary.light}30`,
+  },
+}))
+
+const CardContent = styled(Box)({
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "8px",
+  overflow: "auto",
+})
 
 const Flashcard = ({ flashcard, onEdit }) => {
-  const [flipped, setFlipped] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [frontText, setFrontText] = useState(flashcard.front);
-  const [backText, setBackText] = useState(flashcard.back);
+  const [flipped, setFlipped] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [frontText, setFrontText] = useState(flashcard.front)
+  const [backText, setBackText] = useState(flashcard.back)
 
   const handleEditToggle = (e) => {
-    e.stopPropagation();
-    setIsEditing(!isEditing);
+    e.stopPropagation()
+    setIsEditing(!isEditing)
     if (isEditing) {
-      onEdit({ front: frontText, back: backText });
+      onEdit({ ...flashcard, front: frontText, back: backText })
     }
-  };
+  }
+
+  const handleFlip = (e) => {
+    if (!isEditing) {
+      e.stopPropagation()
+      setFlipped(!flipped)
+    }
+  }
 
   return (
-    <FlipCardContainer onClick={() => !isEditing && setFlipped(!flipped)}>
+    <FlipCardContainer>
       <FlipCardInner flipped={flipped}>
-        <FrontSide>
-          {isEditing ? (
-            <StyledTextarea value={frontText} onChange={(e) => setFrontText(e.target.value)} />
-          ) : (
-            <Typography variant="h6" sx={{ wordWrap: 'break-word', overflow: 'auto', textOverflow: 'ellipsis', maxHeight: '170px' }}>
-              {frontText}
-            </Typography>
-          )}
+        <FrontSide elevation={3} onClick={handleFlip}>
+          <CardContent>
+            {isEditing ? (
+              <StyledTextarea
+                value={frontText}
+                onChange={(e) => setFrontText(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <Typography
+                variant="h6"
+                sx={{
+                  wordWrap: "break-word",
+                  overflow: "auto",
+                  textOverflow: "ellipsis",
+                  maxHeight: "170px",
+                  fontWeight: 500,
+                  lineHeight: 1.5,
+                }}
+              >
+                {frontText}
+              </Typography>
+            )}
+          </CardContent>
         </FrontSide>
-        <BackSide>
-          {isEditing ? (
-            <StyledTextarea value={backText} onChange={(e) => setBackText(e.target.value)} />
-          ) : (
-            <Typography variant="h6" sx={{ wordWrap: 'break-word', overflow: 'auto', textOverflow: 'ellipsis', maxHeight: '170px' }}>
-              {backText}
-            </Typography>
-          )}
+        <BackSide elevation={3} onClick={handleFlip}>
+          <CardContent>
+            {isEditing ? (
+              <StyledTextarea
+                value={backText}
+                onChange={(e) => setBackText(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <Typography
+                variant="h6"
+                sx={{
+                  wordWrap: "break-word",
+                  overflow: "auto",
+                  textOverflow: "ellipsis",
+                  maxHeight: "170px",
+                  fontWeight: 500,
+                  lineHeight: 1.5,
+                }}
+              >
+                {backText}
+              </Typography>
+            )}
+          </CardContent>
         </BackSide>
       </FlipCardInner>
-      <IconButton color="info" onClick={handleEditToggle} style={{ position: 'absolute', top: 8, right: 8 }}>
-        {isEditing ? <CheckIcon /> : <EditIcon />}
-      </IconButton>
-    </FlipCardContainer>
-  );
-};
 
-export default Flashcard;
+      <Box sx={{ position: "absolute", top: 8, right: 8, display: "flex", gap: 1 }}>
+        <Paper
+          elevation={2}
+          sx={{
+            borderRadius: "50%",
+            width: 36,
+            height: 36,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "white",
+          }}
+        >
+          <IconButton color={isEditing ? "success" : "primary"} onClick={handleEditToggle} size="small">
+            {isEditing ? <CheckIcon /> : <EditIcon />}
+          </IconButton>
+        </Paper>
+
+        {!isEditing && (
+          <Paper
+            elevation={2}
+            sx={{
+              borderRadius: "50%",
+              width: 36,
+              height: 36,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "white",
+            }}
+          >
+            <IconButton color="secondary" onClick={handleFlip} size="small">
+              <FlipIcon />
+            </IconButton>
+          </Paper>
+        )}
+      </Box>
+
+      {!isEditing && (
+        <Typography
+          variant="caption"
+          sx={{
+            position: "absolute",
+            bottom: 8,
+            left: 8,
+            color: "text.secondary",
+            backgroundColor: "rgba(255,255,255,0.7)",
+            px: 1,
+            py: 0.5,
+            borderRadius: 1,
+          }}
+        >
+          {flipped ? "Back" : "Front"} • Click to flip
+        </Typography>
+      )}
+    </FlipCardContainer>
+  )
+}
+
+export default Flashcard
+

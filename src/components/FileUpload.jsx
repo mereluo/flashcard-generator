@@ -1,53 +1,115 @@
-import React, { useState } from 'react';
-import { Button, Typography, Box } from '@mui/material';
-import UploadIcon from '@mui/icons-material/Upload';
+"use client"
+
+import { useState } from "react"
+import { Button, Typography, Box, Paper, Alert } from "@mui/material"
+import UploadIcon from "@mui/icons-material/Upload"
+import FileIcon from "@mui/icons-material/InsertDriveFile"
 
 const FileUpload = ({ onUpload }) => {
-  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null)
+  const [error, setError] = useState("")
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
+    setError("")
 
     if (file) {
-      setPdfFile(file);
-    } else {
-      alert('Invalid file type. Please upload the correct format.');
+      if (file.type === "application/pdf") {
+        setPdfFile(file)
+      } else {
+        setError("Invalid file type. Please upload a PDF file.")
+      }
     }
-  };
+  }
 
   const handleUpload = () => {
     if (!pdfFile) {
-      alert('Please upload a PDF file');
-      return;
+      setError("Please upload a PDF file")
+      return
     }
 
     // PDF file is passed as File object
-    if (pdfFile) {
-      onUpload(pdfFile.name, pdfFile);
-    }
-  };
+    onUpload(pdfFile.name, pdfFile)
+  }
 
   return (
-    <div>
-      {/* Row container for PDF/JSON sections */}
-      <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 2 }}>
-        {/* PDF Upload Section */}
-        <Typography variant="body" sx={{ fontFamily: 'Open Sans' }}>
+    <Box sx={{ width: "100%" }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "stretch", sm: "center" },
+          gap: 2,
+          mb: 2,
+        }}
+      >
+        <Typography variant="body1" sx={{ fontWeight: 500, minWidth: "200px" }}>
           Upload PDF for new flashcards
         </Typography>
-        <Button variant="outlined" startIcon={<UploadIcon />} component="label">
-          {pdfFile ? `Selected: ${pdfFile.name}` : 'Choose PDF'}
-          <input type="file" accept="application/pdf" onChange={(e) => handleFileChange(e, 'pdf')} hidden />
+
+        <Button
+          variant="outlined"
+          startIcon={<UploadIcon />}
+          component="label"
+          fullWidth
+          sx={{
+            height: "48px",
+            borderColor: pdfFile ? "primary.main" : "grey.300",
+            borderWidth: "2px",
+            "&:hover": {
+              borderWidth: "2px",
+            },
+          }}
+        >
+          {pdfFile ? "Change PDF" : "Choose PDF"}
+          <input type="file" accept="application/pdf" onChange={handleFileChange} hidden />
         </Button>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2, marginBottom: 3 }}>
-        <Button variant="outlined" color="primary" onClick={handleUpload} sx={{ width: '50%' }}>
-          Upload File
-        </Button>
-      </Box>
-    </div>
-  );
-};
+      {pdfFile && (
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 2,
+            mb: 3,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            backgroundColor: "rgba(63, 81, 181, 0.05)",
+          }}
+        >
+          <FileIcon color="primary" />
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            {pdfFile.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ ml: "auto" }}>
+            {(pdfFile.size / 1024).toFixed(1)} KB
+          </Typography>
+        </Paper>
+      )}
 
-export default FileUpload;
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleUpload}
+        disabled={!pdfFile}
+        fullWidth
+        sx={{
+          height: "48px",
+          mt: 1,
+        }}
+      >
+        Upload File
+      </Button>
+    </Box>
+  )
+}
+
+export default FileUpload
+

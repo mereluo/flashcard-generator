@@ -1,19 +1,56 @@
-import React from 'react';
-import { Grid2, Box } from '@mui/material';
-import Flashcard from './Flashcard';
+import React from "react"
+import { Box, Typography, Divider } from "@mui/material"
+import Flashcard from "./Flashcard"
 
 const FlashcardList = ({ flashcards }) => {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-      <Grid2 container spacing={3} justifyContent="center" sx={{ flexDirection: 'column' }}>
-        {flashcards.map((card) => (
-          <Grid2 item key={card.id}>
-            <Flashcard flashcard={card} />
-          </Grid2>
-        ))}
-      </Grid2>
-    </Box>
-  );
-};
+  const handleEditFlashcard = (updatedCard) => {
+    // This would typically update the flashcard in the parent state
+    console.log("Flashcard updated:", updatedCard)
+  }
 
-export default FlashcardList;
+  if (!flashcards.length) {
+    return null
+  }
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+          width: "100%",
+        }}
+      >
+        {flashcards.map((card, index) => (
+          <React.Fragment key={card.id}>
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  mb: 1,
+                }}
+              >
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    color: "text.secondary",
+                    fontWeight: 500,
+                  }}
+                >
+                  Flashcard {index + 1} of {flashcards.length}
+                </Typography>
+              </Box>
+              <Flashcard flashcard={card} onEdit={(updatedCard) => handleEditFlashcard({ ...card, ...updatedCard })} />
+            </Box>
+            {index < flashcards.length - 1 && <Divider sx={{ width: "100%" }} />}
+          </React.Fragment>
+        ))}
+      </Box>
+    </Box>
+  )
+}
+
+export default FlashcardList
+
