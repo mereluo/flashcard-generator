@@ -64,10 +64,6 @@ const App = () => {
     setUploadedFiles((prev) => [...prev, { name: fileName, content }]);
   };
 
-  const handleGenerate = (generatedFlashcards) => {
-    setFlashcards(generatedFlashcards);
-  };
-
   const handleEditFlashcard = (updatedCard) => {
     setFlashcards((prev) => prev.map((card) => (card.id === updatedCard.id ? updatedCard : card)));
   };
@@ -138,7 +134,7 @@ const App = () => {
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
                 Step 2: Generate Flashcards
               </Typography>
-              <FlashcardControls onGenerate={handleGenerate} />
+              <FlashcardControls setFlashcards={setFlashcards} />
             </Box>
           </Paper>
 

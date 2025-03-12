@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Typography, IconButton, TextareaAutosize, Box, Paper } from '@mui/material';
 import { styled } from '@mui/system';
 import EditIcon from '@mui/icons-material/Edit';
@@ -78,6 +78,12 @@ const Flashcard = ({ flashcard, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [frontText, setFrontText] = useState(flashcard.front);
   const [backText, setBackText] = useState(flashcard.back);
+
+  // Update state when flashcard content changes
+  useEffect(() => {
+    setFrontText(flashcard.front);
+    setBackText(flashcard.back);
+  }, [flashcard]);
 
   const handleEditToggle = (e) => {
     e.stopPropagation();
