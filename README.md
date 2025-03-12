@@ -3,7 +3,7 @@
 ### FileUpload.jsx
 
 - [x] Beautify file upload functions
-- [ ] Upload multiple pdf files
+- [x] Upload multiple pdf files
 - [ ] Upload function: convert pdf into json -> 可以传到 backend
 
 ### FlashcardControls.jsx
