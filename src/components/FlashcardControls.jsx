@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { mockFlashcards } from '../data/mockFlashcards';
 import { MenuItem, TextField, Button, Box, Typography, Divider, Paper, FormControl, InputLabel, Select, Chip, CircularProgress } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
@@ -26,6 +26,20 @@ const FlashcardControls = ({ setFlashcards }) => {
       setIsLoading(false);
     }, 1500); 
   };
+
+  const handleUpdateCard = useCallback((index, updatedCard) => {
+    setCarouselCards(prevCards => {
+      const newCards = [...prevCards];
+      newCards[index] = updatedCard;
+      return newCards;
+    });
+    
+    setFlashcards(prevCards => {
+      return prevCards.map(card => 
+        card.id === updatedCard.id ? updatedCard : card
+      );
+    });
+  }, [setFlashcards]);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -116,8 +130,12 @@ const FlashcardControls = ({ setFlashcards }) => {
         )}
       </Button>
       
-      {/* Single Card */}
-      <FlashcardCarousel cards={carouselCards} />
+      {carouselCards.length > 0 && (
+        <FlashcardCarousel 
+          cards={carouselCards} 
+          onUpdateCard={handleUpdateCard}
+        />
+      )}
     </Box>
   );
 };
