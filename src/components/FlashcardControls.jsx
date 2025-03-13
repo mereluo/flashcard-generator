@@ -1,45 +1,27 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { mockFlashcards } from '../data/mockFlashcards';
 import { MenuItem, TextField, Button, Box, Typography, Divider, Paper, FormControl, InputLabel, Select, Chip, CircularProgress } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import FlashcardCarousel from './FlashcardCarousel'; // flashcard carousel
 
-const FlashcardControls = ({ setFlashcards }) => {
+const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
   const [selectedType, setSelectedType] = useState('10 Definition Flashcards');
   const [customType, setCustomType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
-  // flashcard carousel
-  const [carouselCards, setCarouselCards] = useState([]);
 
   const handleGenerate = () => {
     setIsLoading(true);
-    
+
     // will be replaced after completing backend
     setTimeout(() => {
       const key = selectedType.includes('Definition') ? 'definitions' : 'qna';
       const generatedCards = mockFlashcards[key];
-      
-      setFlashcards(generatedCards);
-      setCarouselCards(generatedCards);
-      
-      setIsLoading(false);
-    }, 1500); 
-  };
 
-  const handleUpdateCard = useCallback((index, updatedCard) => {
-    setCarouselCards(prevCards => {
-      const newCards = [...prevCards];
-      newCards[index] = updatedCard;
-      return newCards;
-    });
-    
-    setFlashcards(prevCards => {
-      return prevCards.map(card => 
-        card.id === updatedCard.id ? updatedCard : card
-      );
-    });
-  }, [setFlashcards]);
+      setFlashcards(generatedCards);
+
+      setIsLoading(false);
+    }, 1500);
+  };
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -112,7 +94,7 @@ const FlashcardControls = ({ setFlashcards }) => {
         sx={{
           height: '48px',
           fontWeight: 600,
-          position: 'relative', 
+          position: 'relative',
         }}
       >
         {isLoading ? 'Generating...' : 'Generate Flashcards'}
@@ -129,13 +111,8 @@ const FlashcardControls = ({ setFlashcards }) => {
           />
         )}
       </Button>
-      
-      {carouselCards.length > 0 && (
-        <FlashcardCarousel 
-          cards={carouselCards} 
-          onUpdateCard={handleUpdateCard}
-        />
-      )}
+
+      {flashcards.length > 0 && <FlashcardCarousel cards={flashcards} onEdit={onEdit} />}
     </Box>
   );
 };
