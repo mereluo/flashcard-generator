@@ -27,7 +27,7 @@ const FlipCardSide = styled(Card)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  textAlign: 'center',
+  textAlign: 'flex-start',
   position: 'absolute',
   backfaceVisibility: 'hidden',
   overflow: 'hidden',
