@@ -68,8 +68,8 @@ const FlashcardControls = ({ setFlashcards }) => {
       <FormControl fullWidth sx={{ mb: 3 }}>
         <InputLabel id="flashcard-type-label">Select Flashcard Type</InputLabel>
         <Select labelId="flashcard-type-label" value={selectedType} onChange={(e) => setSelectedType(e.target.value)} label="Select Flashcard Type" sx={{ borderRadius: 2 }}>
-          <MenuItem value="10 Definition Flashcards">10 Definition Flashcards</MenuItem>
-          <MenuItem value="10 Q&A Flashcards">10 Q&A Flashcards</MenuItem>
+          <MenuItem value="10 Definition Flashcards">Definition Flashcards</MenuItem>
+          <MenuItem value="10 Q&A Flashcards">Q&A Flashcards</MenuItem>
         </Select>
       </FormControl>
 
