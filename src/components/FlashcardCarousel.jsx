@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Box, Typography, IconButton, useTheme } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import Flashcard from './Flashcard'; 
+import Flashcard from './Flashcard';
 
-const FlashcardCarousel = ({ cards, onUpdateCard }) => {
+const FlashcardCarousel = ({ cards, onEdit }) => {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -18,16 +18,6 @@ const FlashcardCarousel = ({ cards, onUpdateCard }) => {
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + cards.length) % cards.length);
-  };
-
-  const handleEditCard = (updatedCard) => {
-    if (onUpdateCard && cards[currentIndex]) {
-
-      onUpdateCard(currentIndex, {
-        ...cards[currentIndex],
-        ...updatedCard
-      });
-    }
   };
 
   return (
@@ -54,40 +44,35 @@ const FlashcardCarousel = ({ cards, onUpdateCard }) => {
       >
         <IconButton
           onClick={handlePrevious}
-          sx={{ 
+          sx={{
             color: 'primary.main',
-            '&:hover': { 
-              backgroundColor: 'rgba(25, 118, 210, 0.04)'
-            }
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.04)',
+            },
           }}
           aria-label="Previous flashcard"
         >
           <NavigateBeforeIcon fontSize="large" />
         </IconButton>
 
-        <Box 
-          sx={{ 
+        <Box
+          sx={{
             position: 'relative',
             width: '100%',
-            mx: 2, 
+            mx: 2,
           }}
         >
           {/* use FlashCard */}
-          {cards[currentIndex] && (
-            <Flashcard 
-              flashcard={cards[currentIndex]} 
-              onEdit={handleEditCard} 
-            />
-          )}
+          {cards[currentIndex] && <Flashcard flashcard={cards[currentIndex]} onEdit={onEdit} />}
         </Box>
 
         <IconButton
           onClick={handleNext}
-          sx={{ 
+          sx={{
             color: 'primary.main',
-            '&:hover': { 
-              backgroundColor: 'rgba(25, 118, 210, 0.04)'
-            }
+            '&:hover': {
+              backgroundColor: 'rgba(25, 118, 210, 0.04)',
+            },
           }}
           aria-label="Next flashcard"
         >

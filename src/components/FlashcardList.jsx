@@ -9,9 +9,10 @@ const FlashcardList = ({ flashcards, onEdit }) => {
   const flashcardsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    setCurrentPage(1); // Reset to page 1 whenever flashcards change
-  }, [flashcards]);
+  // TODO: This logic needs to be improved: only reset if the whole set is changed
+  //   useEffect(() => {
+  //     setCurrentPage(1);
+  //   }, [flashcards]);
 
   const totalPages = Math.ceil(flashcards.length / flashcardsPerPage);
   const startIndex = (currentPage - 1) * flashcardsPerPage;
