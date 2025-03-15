@@ -4,6 +4,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import FileUpload from './components/FileUpload';
 import FlashcardList from './components/FlashcardList';
 import FlashcardControls from './components/FlashcardControls';
+import FlashcardCarousel from './components/FlashcardCarousel';
 
 // Create a custom theme with youthful and refreshing colors
 const theme = createTheme({
@@ -134,24 +135,43 @@ const App = () => {
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
                 Step 2: Generate Flashcards
               </Typography>
-              <FlashcardControls setFlashcards={setFlashcards} />
+              <FlashcardControls setFlashcards={setFlashcards} flashcards={flashcards} onEdit={handleEditFlashcard} />
             </Box>
           </Paper>
 
           {flashcards.length > 0 && (
-            <Paper
-              elevation={3}
-              sx={{
-                p: 4,
-                width: '100%',
-                maxWidth: isMobile ? '100%' : '800px',
-              }}
-            >
-              <Typography variant="h6" sx={{ mb: 3, fontWeight: 500, textAlign: 'center' }}>
-                Your Flashcards
-              </Typography>
-              <FlashcardList flashcards={flashcards} onEdit={handleEditFlashcard} />
-            </Paper>
+            <>
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 4,
+                  width: '100%',
+                  maxWidth: isMobile ? '100%' : '800px',
+                  mb: 4,
+                }}
+              >
+                <Typography variant="h6" sx={{ mb: 3, fontWeight: 500, textAlign: 'center' }}>
+                  Flashcard Preview
+                </Typography>
+                <Divider sx={{ width: '100%', mb: 3 }} />
+                <FlashcardCarousel cards={flashcards} onEdit={handleEditFlashcard} />
+              </Paper>
+
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 4,
+                  width: '100%',
+                  maxWidth: isMobile ? '100%' : '800px',
+                }}
+              >
+                <Typography variant="h6" sx={{ mb: 3, fontWeight: 500, textAlign: 'center' }}>
+                  Flashcard List
+                </Typography>
+                <Divider sx={{ width: '100%', mb: 3 }} />
+                <FlashcardList flashcards={flashcards} onEdit={handleEditFlashcard} />
+              </Paper>
+            </>
           )}
         </Box>
       </Container>

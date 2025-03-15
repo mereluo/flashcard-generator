@@ -1,15 +1,26 @@
 import { useState } from 'react';
 import { mockFlashcards } from '../data/mockFlashcards';
-import { MenuItem, TextField, Button, Box, Typography, Divider, Paper, FormControl, InputLabel, Select, Chip } from '@mui/material';
+import { MenuItem, TextField, Button, Box, Typography, Divider, Paper, FormControl, InputLabel, Select, Chip, CircularProgress } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+// import FlashcardCarousel from './FlashcardCarousel'; // flashcard carousel is in App.jsx
 
-const FlashcardControls = ({ setFlashcards }) => {
+const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
   const [selectedType, setSelectedType] = useState('10 Definition Flashcards');
   const [customType, setCustomType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleGenerate = () => {
-    const key = selectedType.includes('Definition') ? 'definitions' : 'qna';
-    setFlashcards(mockFlashcards[key]);
+    setIsLoading(true);
+
+    // will be replaced after completing backend
+    setTimeout(() => {
+      const key = selectedType.includes('Definition') ? 'definitions' : 'qna';
+      const generatedCards = mockFlashcards[key];
+
+      setFlashcards(generatedCards);
+
+      setIsLoading(false);
+    }, 1500);
   };
 
   return (
@@ -68,8 +79,8 @@ const FlashcardControls = ({ setFlashcards }) => {
       <FormControl fullWidth sx={{ mb: 3 }}>
         <InputLabel id="flashcard-type-label">Select Flashcard Type</InputLabel>
         <Select labelId="flashcard-type-label" value={selectedType} onChange={(e) => setSelectedType(e.target.value)} label="Select Flashcard Type" sx={{ borderRadius: 2 }}>
-          <MenuItem value="10 Definition Flashcards">10 Definition Flashcards</MenuItem>
-          <MenuItem value="10 Q&A Flashcards">10 Q&A Flashcards</MenuItem>
+          <MenuItem value="10 Definition Flashcards">Definition Flashcards</MenuItem>
+          <MenuItem value="10 Q&A Flashcards">Q&A Flashcards</MenuItem>
         </Select>
       </FormControl>
 
@@ -78,14 +89,30 @@ const FlashcardControls = ({ setFlashcards }) => {
         color="primary"
         onClick={handleGenerate}
         fullWidth
-        startIcon={<AutoAwesomeIcon />}
+        disabled={isLoading}
+        startIcon={isLoading ? null : <AutoAwesomeIcon />}
         sx={{
           height: '48px',
           fontWeight: 600,
+          position: 'relative',
         }}
       >
-        Generate Flashcards
+        {isLoading ? 'Generating...' : 'Generate Flashcards'}
+        {isLoading && (
+          <CircularProgress
+            size={24}
+            sx={{
+              position: 'absolute',
+              left: '30%',
+              top: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        )}
       </Button>
+
+      {/* {flashcards.length > 0 && <FlashcardCarousel cards={flashcards} onEdit={onEdit} />} */}
     </Box>
   );
 };
