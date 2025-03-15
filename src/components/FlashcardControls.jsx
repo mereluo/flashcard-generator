@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { mockFlashcards } from '../data/mockFlashcards';
 import { MenuItem, TextField, Button, Box, Typography, Divider, Paper, FormControl, InputLabel, Select, Chip, CircularProgress } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import FlashcardCarousel from './FlashcardCarousel'; // flashcard carousel
+// import FlashcardCarousel from './FlashcardCarousel'; // flashcard carousel is in App.jsx
 
 const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
   const [selectedType, setSelectedType] = useState('10 Definition Flashcards');
@@ -112,7 +112,7 @@ const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
         )}
       </Button>
 
-      {flashcards.length > 0 && <FlashcardCarousel cards={flashcards} onEdit={onEdit} />}
+      {/* {flashcards.length > 0 && <FlashcardCarousel cards={flashcards} onEdit={onEdit} />} */}
     </Box>
   );
 };
