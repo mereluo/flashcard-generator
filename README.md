@@ -1,22 +1,124 @@
-## Frontend TODOs
+# Flashcard Generator
 
-### FileUpload.jsx
+## Description
 
-- [x] Beautify file upload functions
-- [x] Upload multiple pdf files
-- [ ] Upload function: convert pdf into json -> 可以传到 backend
+The Flashcard Generator is an AI-powered application that allows users to generate flashcards from uploaded PDF or text files. The app processes structured text, extracts keywords and entities, and generates relevant question-answer pairs to aid learning. This project is designed to run locally without cloud dependency and is integrated with Qualcomm technologies for optimized on-device inference.
 
-### FlashcardControls.jsx
+## Developers & Contact
 
-- [x] Beautify
+- **[Junjie Li]** - [Your Email or LinkedIn]
+- **[Hui Zhou]** - [Your Email or LinkedIn]
+- **[Meredith Luo]** - [Your Email or LinkedIn]
+- **[Rouming Zhang]** - [Your Email or LinkedIn]
+- **[Tiantian Huang]** - [Your Email or LinkedIn]
 
-### FlashCard.jsx and FlashCardList.jsx
+## Setup Instructions
 
-- [x] When editing, if there are too many words, there’s no scroll function
-- [ ] 如果重新 generate，flashcards 不能更新 (换成另一个 sample）
-- [x] OnEdit function incomplete
+Prerequisites
 
-### 待开发
+Ensure you have the following dependencies installed:
 
-- [ ] A save button to store generated flashcards locally as a Json file
-- [ ] Click on keyword and generate new flashcards
+```
+Python 3.8+
+Node.js (>= 14.0.0)
+npm (>= 6.0.0)
+
+```
+
+## Backend Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/your-repo/flashcard-backend.git
+cd flashcard-backend
+```
+
+Create a virtual environment:
+
+```
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+Download necessary NLP models:
+
+```
+python -m nltk.downloader punkt
+python -m spacy download en_core_web_sm
+```
+
+
+Start the FastAPI server:
+```
+
+uvicorn main:app --reload
+```
+
+The API will be available at http://127.0.0.1:8000
+
+## Frontend Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/your-username/flashcard-generator.git
+cd flashcard-generator
+```
+
+Install dependencies:
+
+```
+
+npm install
+```
+
+Running the Application
+
+```
+npm run dev
+```
+
+## Usage
+
+1. Upload a PDF to generate flashcards automatically.
+2. Choose a predefined set of flashcards (Definitions or Q&A format).
+3. Edit flashcards using the interactive editor.
+4. Navigate through flashcards using the carousel or list view.
+
+
+## License
+
+This project is licensed under the MIT License.
+
+```
+
+MIT License
+
+Copyright (c) [2025] [NextLv Team]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
