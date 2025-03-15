@@ -151,7 +151,7 @@ const App = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ mb: 3, fontWeight: 500, textAlign: 'center' }}>
-                  ** Flashcard Preview **
+                  Flashcard Preview
                 </Typography>
                 <Divider sx={{ width: '100%', mb: 3 }} />
                 <FlashcardCarousel cards={flashcards} onEdit={handleEditFlashcard} />
@@ -166,7 +166,7 @@ const App = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ mb: 3, fontWeight: 500, textAlign: 'center' }}>
-                  ** Flashcard List 
+                  Flashcard List
                 </Typography>
                 <Divider sx={{ width: '100%', mb: 3 }} />
                 <FlashcardList flashcards={flashcards} onEdit={handleEditFlashcard} />

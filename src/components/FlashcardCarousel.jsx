@@ -24,7 +24,7 @@ const FlashcardCarousel = ({ cards, onEdit }) => {
     <Box
       sx={{
         width: '100%',
-        maxWidth: '600px',
+        maxWidth: '800px',
         mb: 3,
         mt: 3,
         display: 'flex',
