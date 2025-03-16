@@ -23,7 +23,7 @@ const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           filename: 'test.pdf', // Replace with the actual file name from uploaded files
-          //   user_prompt: customType,
+          userPrompt: customType,
         }),
       });
 
