@@ -73,7 +73,28 @@ const CardContent = styled(Box)({
   overflow: 'auto',
 });
 
-const Flashcard = ({ flashcard, onEdit }) => {
+const HighlightedLink = styled('a')(({ theme }) => ({
+  fontWeight: 'bold',
+  color: theme.palette.primary.main,
+  cursor: 'pointer',
+  textDecoration: 'underline',
+}));
+
+const highlightTerminology = (text, terminology, onClick) => {
+  if (!terminology) return text;
+  const parts = text.split(new RegExp(`(${terminology})`, 'gi'));
+  return parts.map((part, index) =>
+    part.toLowerCase() === terminology.toLowerCase() ? (
+      <HighlightedLink key={index} onClick={onClick}>
+        {part}
+      </HighlightedLink>
+    ) : (
+      part
+    )
+  );
+};
+
+const Flashcard = ({ flashcard, onEdit, onAddFlashcard }) => {
   const [flipped, setFlipped] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [frontText, setFrontText] = useState(flashcard.front);
@@ -100,6 +121,32 @@ const Flashcard = ({ flashcard, onEdit }) => {
     }
   };
 
+  const handleTerminologyClick = async (e) => {
+    e.stopPropagation();
+    const response = await fetch('http://127.0.0.1:1111/api/generate_flashcards', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        filename: flashcard.filename,
+        userPrompt: `Create a flashcard for the term "${flashcard.terminology}".`,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch flashcards.');
+    }
+
+    const data = await response.json();
+    const newFlashcard = {
+      id: data.id,
+      front: data.question,
+      back: data.answer,
+      terminology: data.terminology,
+    };
+
+    onAddFlashcard(newFlashcard);
+  };
+
   return (
     <FlipCardContainer>
       <FlipCardInner flipped={flipped}>
@@ -119,7 +166,7 @@ const Flashcard = ({ flashcard, onEdit }) => {
                   lineHeight: 1.5,
                 }}
               >
-                {frontText}
+                {highlightTerminology(frontText, flashcard.terminology, handleTerminologyClick)}
               </Typography>
             )}
           </CardContent>
@@ -140,19 +187,7 @@ const Flashcard = ({ flashcard, onEdit }) => {
                   lineHeight: 1.5,
                 }}
               >
-                {backText}
-              </Typography>
-            )}
-            {flashcard.terminology && (
-              <Typography
-                variant="body2"
-                color="primary"
-                sx={{
-                  fontWeight: 'bold',
-                  mt: 1,
-                }}
-              >
-                Terminology: {flashcard.terminology}
+                {highlightTerminology(backText, flashcard.terminology, handleTerminologyClick)}
               </Typography>
             )}
           </CardContent>

@@ -7,17 +7,22 @@ import Flashcard from './Flashcard';
 const FlashcardCarousel = ({ cards, onEdit }) => {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [flashcards, setFlashcards] = useState(cards);
 
-  if (!cards || cards.length === 0) {
+  if (!flashcards || flashcards.length === 0) {
     return null;
   }
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % cards.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + cards.length) % cards.length);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + flashcards.length) % flashcards.length);
+  };
+
+  const handleAddFlashcard = (newFlashcard) => {
+    setFlashcards((prevFlashcards) => [...prevFlashcards, newFlashcard]);
   };
 
   return (
@@ -62,8 +67,9 @@ const FlashcardCarousel = ({ cards, onEdit }) => {
             mx: 2,
           }}
         >
-          {/* use FlashCard */}
-          {cards[currentIndex] && <Flashcard flashcard={cards[currentIndex]} onEdit={onEdit} />}
+          {flashcards[currentIndex] && (
+            <Flashcard flashcard={flashcards[currentIndex]} onEdit={onEdit} onAddFlashcard={handleAddFlashcard} />
+          )}
         </Box>
 
         <IconButton
@@ -87,7 +93,7 @@ const FlashcardCarousel = ({ cards, onEdit }) => {
           fontWeight: 500,
         }}
       >
-        Flashcard {currentIndex + 1} of {cards.length}
+        Flashcard {currentIndex + 1} of {flashcards.length}
       </Typography>
     </Box>
   );
