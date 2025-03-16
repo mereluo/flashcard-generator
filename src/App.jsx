@@ -58,11 +58,11 @@ const theme = createTheme({
 
 const App = () => {
   const [flashcards, setFlashcards] = useState([]);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFilename, setUploadedFilename] = useState('');
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleUpload = (fileName, content) => {
-    setUploadedFiles((prev) => [...prev, { name: fileName, content }]);
+  const handleUpload = (filename) => {
+    setUploadedFilename(filename);
   };
 
   const handleEditFlashcard = (updatedCard) => {
@@ -135,7 +135,7 @@ const App = () => {
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
                 Step 2: Generate Flashcards
               </Typography>
-              <FlashcardControls setFlashcards={setFlashcards} flashcards={flashcards} onEdit={handleEditFlashcard} />
+              <FlashcardControls setFlashcards={setFlashcards} filename={uploadedFilename} />
             </Box>
           </Paper>
 
