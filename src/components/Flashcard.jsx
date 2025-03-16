@@ -143,6 +143,18 @@ const Flashcard = ({ flashcard, onEdit }) => {
                 {backText}
               </Typography>
             )}
+            {flashcard.terminology && (
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{
+                  fontWeight: 'bold',
+                  mt: 1,
+                }}
+              >
+                Terminology: {flashcard.terminology}
+              </Typography>
+            )}
           </CardContent>
         </BackSide>
       </FlipCardInner>
