@@ -5,25 +5,37 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 // import FlashcardCarousel from './FlashcardCarousel'; // flashcard carousel is in App.jsx
 
 const FlashcardControls = ({ setFlashcards, filename }) => {
-  const [selectedType, setSelectedType] = useState('10 Definition Flashcards');
+  const [flashcardCount, setFlashcardCount] = useState('complete');
+  const [role, setRole] = useState('student');
+  const [purpose, setPurpose] = useState('review');
   const [customType, setCustomType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGenerate = async () => {
-    if (!customType.trim()) {
-      alert('Please enter a custom prompt.');
-      return;
-    }
-
     setIsLoading(true);
     console.log('in control: ', filename);
+    
     try {
+      let userPrompt;
+      const cardCount = flashcardCount === 'complete' ? '5' : '3';
+      
+      // Simplified logic:
+      // 1. If custom prompt has content, use it directly
+      // 2. If custom prompt is empty, use a simple combination of the dropdown selections
+      if (customType.trim()) {
+        userPrompt = customType;
+      } else {
+        userPrompt = `Create ${cardCount} flashcards as a ${role} for ${purpose} purpose.`;
+      }
+
+      console.log("final user prompt: ", userPrompt)
+      
       const response = await fetch('http://127.0.0.1:8000/api/generate_flashcards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          filename: filename, // Replace with the actual file name from uploaded files
-          userPrompt: customType,
+          filename: filename,
+          userPrompt: userPrompt,
         }),
       });
 
@@ -71,7 +83,7 @@ const FlashcardControls = ({ setFlashcards, filename }) => {
           fullWidth
           multiline
           minRows={3}
-          placeholder="Example: Create 10 flashcards about the key concepts of quantum physics with simple explanations"
+          placeholder="Optional: Specify content or topics (e.g., key concepts of quantum physics with simple explanations)"
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: 2,
@@ -101,11 +113,48 @@ const FlashcardControls = ({ setFlashcards, filename }) => {
         <Divider sx={{ flex: 1 }} />
       </Box>
 
+      {/* First dropdown: Flashcard Count */}
+      <FormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel id="flashcard-count-label">Flashcard Number</InputLabel>
+        <Select 
+          labelId="flashcard-count-label" 
+          value={flashcardCount} 
+          onChange={(e) => setFlashcardCount(e.target.value)} 
+          label="Flashcard Number" 
+          sx={{ borderRadius: 2 }}
+        >
+          <MenuItem value="complete">Complete (5)</MenuItem>
+          <MenuItem value="concise">Concise (3)</MenuItem>
+        </Select>
+      </FormControl>
+
+      {/* Second dropdown: Role */}
+      <FormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel id="role-label">Role</InputLabel>
+        <Select 
+          labelId="role-label" 
+          value={role} 
+          onChange={(e) => setRole(e.target.value)} 
+          label="Role" 
+          sx={{ borderRadius: 2 }}
+        >
+          <MenuItem value="student">Student</MenuItem>
+          <MenuItem value="interviewee">Interviewee</MenuItem>
+        </Select>
+      </FormControl>
+
+      {/* Third dropdown: Purpose */}
       <FormControl fullWidth sx={{ mb: 3 }}>
-        <InputLabel id="flashcard-type-label">Select Flashcard Type</InputLabel>
-        <Select labelId="flashcard-type-label" value={selectedType} onChange={(e) => setSelectedType(e.target.value)} label="Select Flashcard Type" sx={{ borderRadius: 2 }}>
-          <MenuItem value="10 Definition Flashcards">Definition Flashcards</MenuItem>
-          <MenuItem value="10 Q&A Flashcards">Q&A Flashcards</MenuItem>
+        <InputLabel id="purpose-label">Purpose</InputLabel>
+        <Select 
+          labelId="purpose-label" 
+          value={purpose} 
+          onChange={(e) => setPurpose(e.target.value)} 
+          label="Purpose" 
+          sx={{ borderRadius: 2 }}
+        >
+          <MenuItem value="review">Review</MenuItem>
+          <MenuItem value="interview">Interview</MenuItem>
         </Select>
       </FormControl>
 
