@@ -9,18 +9,43 @@ const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
   const [customType, setCustomType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
+    if (!customType.trim()) {
+      alert('Please enter a custom prompt.');
+      return;
+    }
+
     setIsLoading(true);
 
-    // will be replaced after completing backend
-    setTimeout(() => {
-      const key = selectedType.includes('Definition') ? 'definitions' : 'qna';
-      const generatedCards = mockFlashcards[key];
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/generate_flashcards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: 'test.pdf', // Replace with the actual file name from uploaded files
+          //   user_prompt: customType,
+        }),
+      });
 
-      setFlashcards(generatedCards);
+      if (!response.ok) {
+        throw new Error('Failed to fetch flashcards.');
+      }
 
+      const data = await response.json();
+
+      // Transform data into the expected flashcard format for the frontend
+      const formattedFlashcards = data.map((item) => ({
+        id: item.id,
+        front: item.question,
+        back: item.answer,
+      }));
+
+      setFlashcards(formattedFlashcards);
+    } catch (error) {
+      console.error('Error generating flashcards:', error);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
