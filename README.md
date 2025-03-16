@@ -1,4 +1,4 @@
-# Flashcard Generator
+# Flashcard Generator - Frontend
 
 ## Description
 
@@ -25,44 +25,6 @@ npm (>= 6.0.0)
 
 ```
 
-## Backend Installation
-
-Clone the repository:
-
-```
-git clone https://github.com/your-repo/flashcard-backend.git
-cd flashcard-backend
-```
-
-Create a virtual environment:
-
-```
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-```
-
-Install dependencies:
-
-```
-pip install -r requirements.txt
-```
-
-Download necessary NLP models:
-
-```
-python -m nltk.downloader punkt
-python -m spacy download en_core_web_sm
-```
-
-
-Start the FastAPI server:
-```
-
-uvicorn main:app --reload
-```
-
-The API will be available at http://127.0.0.1:8000
-
 ## Frontend Installation
 
 Clone the repository:
@@ -75,7 +37,6 @@ cd flashcard-generator
 Install dependencies:
 
 ```
-
 npm install
 ```
 
@@ -98,7 +59,6 @@ npm run dev
 This project is licensed under the MIT License.
 
 ```
-
 MIT License
 
 Copyright (c) [2025] [NextLv Team]
