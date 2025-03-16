@@ -2,15 +2,15 @@
 
 ## Description
 
-The Flashcard Generator is an AI-powered application that allows users to generate flashcards from uploaded PDF or text files. The app processes structured text, extracts keywords and entities, and generates relevant question-answer pairs to aid learning. This project is designed to run locally without cloud dependency and is integrated with Qualcomm technologies for optimized on-device inference.
+The Flashcard Generator is an AI-powered application that allows users to generate flashcards from uploaded PDF files. The app processes structured text, extracts keywords and entities, and generates relevant question-answer pairs to aid learning. This project is designed to run locally without cloud dependency and is integrated with Qualcomm technologies for optimized on-device inference.
 
 ## Developers & Contact
 
-- **[Junjie Li]** - [Your Email or LinkedIn]
-- **[Hui Zhou]** - [Your Email or LinkedIn]
-- **[Meredith Luo]** - [Your Email or LinkedIn]
-- **[Rouming Zhang]** - [Your Email or LinkedIn]
-- **[Tiantian Huang]** - [Your Email or LinkedIn]
+- **[Junjie Li]** - alvinbluy@gmail.com
+- **[Hui Zhou]** - zhouhui2023cs@gmail.com
+- **[Meredith Luo]** - meredithluo710@gmail.com
+- **[Rouming Zhang]** - lotus20210417@gmail.com
+- **[Tiantian Huang]** - huangtiantian0430@gmail.com
 
 ## Setup Instructions
 
@@ -88,7 +88,7 @@ npm run dev
 ## Usage
 
 1. Upload a PDF to generate flashcards automatically.
-2. Choose a predefined set of flashcards (Definitions or Q&A format).
+2. Choose the selected type of card number, role and purpose, or customize your flashcard generation prompt.
 3. Edit flashcards using the interactive editor.
 4. Navigate through flashcards using the carousel or list view.
 
