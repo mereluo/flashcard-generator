@@ -14,22 +14,22 @@ const FlashcardControls = ({ setFlashcards, filename }) => {
   const handleGenerate = async () => {
     setIsLoading(true);
     console.log('in control: ', filename);
-    
+
     try {
       let userPrompt;
       const cardCount = flashcardCount === 'complete' ? '5' : '3';
-      
+
       // Simplified logic:
       // 1. If custom prompt has content, use it directly
       // 2. If custom prompt is empty, use a simple combination of the dropdown selections
       if (customType.trim()) {
         userPrompt = customType;
       } else {
-        userPrompt = `Create ${cardCount} flashcards as a ${role} for ${purpose} purpose.`;
+        userPrompt = `Create ${cardCount} flashcards for ${role} for ${purpose} purpose.`;
       }
 
-      console.log("final user prompt: ", userPrompt)
-      
+      console.log('final user prompt: ', userPrompt);
+
       const response = await fetch('http://127.0.0.1:8000/api/generate_flashcards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -116,13 +116,7 @@ const FlashcardControls = ({ setFlashcards, filename }) => {
       {/* First dropdown: Flashcard Count */}
       <FormControl fullWidth sx={{ mb: 2 }}>
         <InputLabel id="flashcard-count-label">Flashcard Number</InputLabel>
-        <Select 
-          labelId="flashcard-count-label" 
-          value={flashcardCount} 
-          onChange={(e) => setFlashcardCount(e.target.value)} 
-          label="Flashcard Number" 
-          sx={{ borderRadius: 2 }}
-        >
+        <Select labelId="flashcard-count-label" value={flashcardCount} onChange={(e) => setFlashcardCount(e.target.value)} label="Flashcard Number" sx={{ borderRadius: 2 }}>
           <MenuItem value="complete">Complete (5)</MenuItem>
           <MenuItem value="concise">Concise (3)</MenuItem>
         </Select>
@@ -131,13 +125,7 @@ const FlashcardControls = ({ setFlashcards, filename }) => {
       {/* Second dropdown: Role */}
       <FormControl fullWidth sx={{ mb: 2 }}>
         <InputLabel id="role-label">Role</InputLabel>
-        <Select 
-          labelId="role-label" 
-          value={role} 
-          onChange={(e) => setRole(e.target.value)} 
-          label="Role" 
-          sx={{ borderRadius: 2 }}
-        >
+        <Select labelId="role-label" value={role} onChange={(e) => setRole(e.target.value)} label="Role" sx={{ borderRadius: 2 }}>
           <MenuItem value="student">Student</MenuItem>
           <MenuItem value="interviewee">Interviewee</MenuItem>
         </Select>
@@ -146,13 +134,7 @@ const FlashcardControls = ({ setFlashcards, filename }) => {
       {/* Third dropdown: Purpose */}
       <FormControl fullWidth sx={{ mb: 3 }}>
         <InputLabel id="purpose-label">Purpose</InputLabel>
-        <Select 
-          labelId="purpose-label" 
-          value={purpose} 
-          onChange={(e) => setPurpose(e.target.value)} 
-          label="Purpose" 
-          sx={{ borderRadius: 2 }}
-        >
+        <Select labelId="purpose-label" value={purpose} onChange={(e) => setPurpose(e.target.value)} label="Purpose" sx={{ borderRadius: 2 }}>
           <MenuItem value="review">Review</MenuItem>
           <MenuItem value="interview">Interview</MenuItem>
         </Select>
