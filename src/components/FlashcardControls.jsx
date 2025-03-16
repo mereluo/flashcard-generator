@@ -4,7 +4,7 @@ import { MenuItem, TextField, Button, Box, Typography, Divider, Paper, FormContr
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 // import FlashcardCarousel from './FlashcardCarousel'; // flashcard carousel is in App.jsx
 
-const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
+const FlashcardControls = ({ setFlashcards, filename }) => {
   const [selectedType, setSelectedType] = useState('10 Definition Flashcards');
   const [customType, setCustomType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -16,13 +16,13 @@ const FlashcardControls = ({ setFlashcards, flashcards, onEdit }) => {
     }
 
     setIsLoading(true);
-
+    console.log('in control: ', filename);
     try {
       const response = await fetch('http://127.0.0.1:8000/api/generate_flashcards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          filename: 'test.pdf', // Replace with the actual file name from uploaded files
+          filename: filename, // Replace with the actual file name from uploaded files
           userPrompt: customType,
         }),
       });
